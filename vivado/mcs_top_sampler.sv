@@ -32,7 +32,9 @@ module mcs_top_sampler
    output logic audio_on,audio_pdm,
    // PMOD JA (divided into top row and bottom row)
    output logic [4:1] ja_top,
-   output logic [10:7] ja_btm
+   
+   input logic [10:7] ja_btm
+
 );
 
    // declaration
@@ -58,6 +60,8 @@ module mcs_top_sampler
    logic [7:0] pwm; 
    // ddfs/audio pdm 
    logic pdm, ddfs_sq_wave;
+   
+   
 
    // body
    assign clk_100M = clk;       // 100 MHz external clock
@@ -72,7 +76,7 @@ module mcs_top_sampler
    assign ja_top[1] = ddfs_sq_wave;
    assign ja_top[2] = pdm;
    assign ja_top[4:3] = pwm[7:6];
-   assign ja_btm = 4'b0000;
+   
    
    //instantiate uBlaze MCS
    cpu cpu_unit (
@@ -101,8 +105,16 @@ module mcs_top_sampler
     .mmio_addr(fp_addr), 
     .mmio_wr_data(fp_wr_data),
     .mmio_rd_data(fp_rd_data),
-    .acl_ss(acl_ss_n),          
+    .acl_ss(acl_ss_n),       
+    
+    //new components
+    .sonar_trig(ja_btm[2]),
+    .sonar_echo(ja_btm[8]),   
     .*  
    );   
+   
+
+
 endmodule    
    
+
