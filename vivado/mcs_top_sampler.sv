@@ -32,8 +32,11 @@ module mcs_top_sampler
    output logic audio_on,audio_pdm,
    // PMOD JA (divided into top row and bottom row)
    output logic [4:1] ja_top,
+   input logic [10:7] ja_btm,
    
-   input logic [10:7] ja_btm
+   output logic [4:1] jb_top,
+   input logic [10:7] jb_btm
+   
 
 );
 
@@ -108,13 +111,12 @@ module mcs_top_sampler
     .acl_ss(acl_ss_n),       
     
     //new components
-    .sonar_trig(ja_btm[2]),
-    .sonar_echo(ja_btm[8]),   
+    .sonar_trig(jb_top[1]),
+    .sonar_echo(jb_btm[7]),   
     .*  
    );   
    
 
 
 endmodule    
-   
 
