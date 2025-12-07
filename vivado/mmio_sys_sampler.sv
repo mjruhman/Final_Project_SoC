@@ -157,7 +157,7 @@ module mmio_sys_sampler
     );
     
    // slot 6: pwm 
-    chu_io_pwm_core #(.W(8), .R(10)) pwm_slot6 //
+  chu_io_pwm_core #(.W(8), .R(16)) pwm_slot6 //
     (.clk(clk),
      .reset(reset),
      .cs(cs_array[`S6_PWM]),
@@ -279,6 +279,7 @@ module mmio_sys_sampler
       end
    endgenerate
 endmodule
+
 
 
 
