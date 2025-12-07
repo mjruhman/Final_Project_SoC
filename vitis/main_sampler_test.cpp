@@ -110,14 +110,9 @@ void servo_test(PwmCore *pwm_p){
    pwm_p->set_duty(3277,6);
    sleep_ms(1000);
 
-   pwm_p->set_duty(4915,6);
-   sleep_ms(1000);
-
    pwm_p->set_duty(6554,6);
    sleep_ms(1000);
 
-
-   
 }
 
 
@@ -137,6 +132,5 @@ int main() {
       
    } //while
 } //main
-
 
 
