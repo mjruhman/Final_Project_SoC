@@ -115,6 +115,22 @@ void servo_test(PwmCore *pwm_p){
 
 }
 
+void check_sensor(HcSr04Core *sonar_p, GpoCore *led_p){
+    led_p->write(0xffff);
+    double dist = sonar_p->read_distance();
+    if (dist < 50){
+        led_p->write(0x0000);
+    }
+    else {
+        led_p->write(0xffff);
+    }
+
+    sleep_ms(1000);
+
+
+
+}
+
 
 GpoCore led(get_slot_addr(BRIDGE_BASE, S2_LED));
 GpiCore sw(get_slot_addr(BRIDGE_BASE, S3_SW));
