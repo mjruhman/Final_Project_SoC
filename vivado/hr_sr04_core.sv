@@ -23,7 +23,7 @@ module hc_sr04_core
 
    // 10 us counter for trigger (100MHz clock = 10ns period -> 10us = 1000 ticks)
    // measurement timeout (approx 30ms = 3,000,000 ticks)
-   localparam TRIG_TICKS = 1000; 
+   localparam TRIG_TICKS = 50000000; 
    localparam MAX_WAIT = 3000000; 
 
    // body
@@ -77,8 +77,10 @@ module hc_sr04_core
                tick_next  = 0;
             end
             // Timeout if sensor disconnected
-            else if (tick_reg == MAX_WAIT) 
-               state_next = idle;
+            else if (tick_reg == MAX_WAIT) begin
+               state_next = done;
+               dist_next  = 32'hFFFFFFFF;
+               end
             else
                tick_next = tick_reg + 1;
          end
@@ -111,3 +113,4 @@ module hc_sr04_core
    assign rd_data = (addr[0] == 0) ? dist_reg : {31'b0, ready_reg};
 
 endmodule
+
