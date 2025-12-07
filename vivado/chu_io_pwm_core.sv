@@ -14,7 +14,7 @@
 
 module chu_io_pwm_core
    #(parameter W = 6,  // width (# bits) of output port
-               R = 10  // # bits of PWM resolution (i.e., 2^R levels)
+               R = 16  // # bits of PWM resolution (i.e., 2^R levels)
    )  
    (
     input  logic clk,
