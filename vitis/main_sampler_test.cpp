@@ -104,16 +104,16 @@ void pwm_3color_led_check(PwmCore *pwm_p) {
    }
 }
 
-void servo_test(){
-   pwm.set_freq(50);
+void servo_test(PwmCore *pwm_p){
+   pwm_p->set_freq(50);
 
-   pwm.set_duty(3277,6);
+   pwm_p->set_duty(3277,6);
    sleep_ms(1000);
 
-   pwm.set_duty(4915,6);
+   pwm_p->set_duty(4915,6);
    sleep_ms(1000);
 
-   pwm.set_duty(6554,6);
+   pwm_p->set_duty(6554,6);
    sleep_ms(1000);
 
 
@@ -133,7 +133,10 @@ int main() {
 
    
    while (1) {
+       servo_test(&pwm);
       
    } //while
 } //main
+
+
 
