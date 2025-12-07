@@ -139,7 +139,7 @@ public:
     *
     */
    enum {
-      RESOLUTION_BITS = 10, /**< # resolution bits defined in HDL */
+      RESOLUTION_BITS = 16, /**< # resolution bits defined in HDL */
       MAX = 1 << RESOLUTION_BITS /**< # max levels in duty cycle (= 2^ESOLUTION_BITS; 100% duty cycle) */
    };
    /**
@@ -251,3 +251,4 @@ private:
 
 
 #endif  // _GPIO_H_INCLUDED
+
