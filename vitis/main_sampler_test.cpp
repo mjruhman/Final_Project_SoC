@@ -118,20 +118,12 @@ void servo_test(PwmCore *pwm_p){
 
 void check_sensor(HcSr04Core *sonar_p, GpoCore *led_p){
     double dist = sonar_p->read_distance();
-    if(dist == -1.0){
-         led_p->write(0xffff);
-         sleep_ms(1000);
-          led_p->write(0x0000);
-    }
     if (dist < 50){
-        led_p->write(0xffff);
-    }
-    else {
         led_p->write(0x0000);
     }
-
-    sleep_ms(1000);
-
+    else {
+        led_p->write(0xffff);
+    }
 
 
 }
@@ -152,11 +144,11 @@ int main() {
    while (1) {
        //servo_test(&pwm);
        check_sensor(&sonar, &led);
-       sleep_ms(500);
-       
+       sleep_ms(250);
+
+
 
       
    } //while
 } //main
-
 
