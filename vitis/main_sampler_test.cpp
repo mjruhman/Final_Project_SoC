@@ -11,6 +11,7 @@
 #include "chu_init.h"
 #include "gpio_cores.h"
 #include "sseg_core.h"
+#include "hc_sr04_core.h"
 
 
 /**
@@ -136,10 +137,11 @@ void check_sensor(HcSr04Core *sonar_p, GpoCore *led_p){
 }
 
 
+
 GpoCore led(get_slot_addr(BRIDGE_BASE, S2_LED));
 GpiCore sw(get_slot_addr(BRIDGE_BASE, S3_SW));
 PwmCore pwm(get_slot_addr(BRIDGE_BASE, S6_PWM));
-
+HcSr04Core sonar(get_slot_addr(BRIDGE_BASE, S4_USER));
 
 
 
@@ -148,7 +150,11 @@ int main() {
 
    
    while (1) {
-       servo_test(&pwm);
+       //servo_test(&pwm);
+       check_sensor(&sonar, &led);
+       sleep_ms(500);
+       
+
       
    } //while
 } //main
