@@ -33,7 +33,9 @@ module mcs_top_sampler
    // PMOD JA (divided into top row and bottom row)
    output logic [4:1] ja_top,
    input logic [10:7] ja_btm,
-   
+
+   // Add the PMOD JB and have it split like the JA
+   // That Chu created
    output logic [4:1] jb_top,
    input logic [10:7] jb_btm
    
@@ -63,7 +65,8 @@ module mcs_top_sampler
    logic [7:0] pwm; 
    // ddfs/audio pdm 
    logic pdm, ddfs_sq_wave;
-   
+
+   // Declare
    logic sonar_trig_wire;
    logic sonar_echo_wire;
    
@@ -82,7 +85,8 @@ module mcs_top_sampler
    assign ja_top[1] = ddfs_sq_wave;
    assign ja_top[2] = pdm;
    assign ja_top[4:3] = pwm[7:6];
-   
+
+   // PMOD JB for ultrasonic sensor 
    assign jb_top[1] = sonar_trig_wire;
    assign sonar_echo_wire = jb_btm[8];
 
@@ -126,3 +130,4 @@ module mcs_top_sampler
 
 
 endmodule    
+
