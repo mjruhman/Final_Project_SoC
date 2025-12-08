@@ -11,7 +11,7 @@ uint32_t HcSr04Core::read_raw() {
    // Write any value to DATA_REG to trigger the sensor
    io_write(base_addr, DATA_REG, 1);
 
-
+   // For the hanging
     int timeout = 1000000;
    // Poll the ready bit in STATUS_REG
    while ((io_read(base_addr, STATUS_REG) & 0x01) == 0) {
