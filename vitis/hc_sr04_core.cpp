@@ -11,9 +11,15 @@ uint32_t HcSr04Core::read_raw() {
    // 1. Write any value to DATA_REG to trigger the sensor
    io_write(base_addr, DATA_REG, 1);
 
+
+    int timeout = 1000000;
    // 2. Poll the ready bit in STATUS_REG
    while ((io_read(base_addr, STATUS_REG) & 0x01) == 0) {
       // Busy wait
+      timeout--;
+      if(timeout == 0){
+          return 0xFFFFFFFF;
+      }
    }
 
    // 3. Read the result from DATA_REG
@@ -36,3 +42,4 @@ double HcSr04Core::read_distance() {
    
    return distance_cm;
 }
+
