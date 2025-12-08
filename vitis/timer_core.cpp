@@ -41,10 +41,22 @@ void TimerCore::clear() {
 }
 
 uint64_t TimerCore::read_tick() {
-   uint64_t upper, lower;
+   uint64_t upper, lower, upper_check;
 
-   lower = (uint64_t) io_read(base_addr, COUNTER_LOWER_REG);
+   // 1. Read Upper 32 bits
    upper = (uint64_t) io_read(base_addr, COUNTER_UPPER_REG);
+   // 2. Read Lower 32 bits
+   lower = (uint64_t) io_read(base_addr, COUNTER_LOWER_REG);
+   // 3. Read Upper AGAIN to check if it changed
+   upper_check = (uint64_t) io_read(base_addr, COUNTER_UPPER_REG);
+
+   // If Upper changed between step 1 and 3, a rollover happened.
+   // We must re-read the Lower part to be safe.
+   if (upper != upper_check) {
+       lower = (uint64_t) io_read(base_addr, COUNTER_LOWER_REG);
+       upper = upper_check; // Use the new upper value
+   }
+
    return ((upper << 32) | lower);
 }
 
@@ -62,3 +74,4 @@ void TimerCore::sleep(uint64_t us) {
       now = read_time();
    } while ((now - start_time) < us);
 }
+
