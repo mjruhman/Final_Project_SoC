@@ -64,19 +64,6 @@ void sw_check(GpoCore *led_p, GpiCore *sw_p) {
    }
 }
 
-/**
- * uart transmits test line.
- * @note uart instance is declared as global variable in chu_io_basic.h
- */
-void uart_check() {
-   static int loop = 0;
-
-   uart.disp("uart test #");
-   uart.disp(loop);
-   uart.disp("\n\r");
-   loop++;
-}
-
 
 /**
  * tri-color led dims gradually
@@ -116,14 +103,33 @@ void servo_test(PwmCore *pwm_p){
 
 }
 
+void distance(SsegCore *sseg_p, int dist){
+    uint8_t list[8];
+
+    for (int i = 0; i < 8; i++){
+        list[i] = 0xff;
+    }
+    
+    if(dist > 999) dist = 999;
+
+    list[7] = sseg_p->h2s(dist % 10);
+    list[6] = sseg_p->h2s((dist/10) % 10);
+    list[5] = sseg_p->h2s((dist/100) % 10);
+
+    sseg_p->write_8ptn(list);
+    sseg_p->set_dp(0x00);
+}
+
 void check_sensor(HcSr04Core *sonar_p, GpoCore *led_p){
     double dist = sonar_p->read_distance();
+
     if (dist < 50){
-        led_p->write(0x0000);
+        led_p->write(0xffff);        
     }
     else {
-        led_p->write(0xffff);
+        led_p->write(0x0000);
     }
+
 
 
 }
@@ -133,6 +139,7 @@ void check_sensor(HcSr04Core *sonar_p, GpoCore *led_p){
 GpoCore led(get_slot_addr(BRIDGE_BASE, S2_LED));
 GpiCore sw(get_slot_addr(BRIDGE_BASE, S3_SW));
 PwmCore pwm(get_slot_addr(BRIDGE_BASE, S6_PWM));
+SsegCore sseg(get_slot_addr(BRIDGE_BASE, S8_SSEG));
 HcSr04Core sonar(get_slot_addr(BRIDGE_BASE, S4_USER));
 
 
@@ -144,11 +151,12 @@ int main() {
    while (1) {
        //servo_test(&pwm);
        check_sensor(&sonar, &led);
-       sleep_ms(250);
+       sleep_ms(100);
 
 
 
       
    } //while
 } //main
+
 
