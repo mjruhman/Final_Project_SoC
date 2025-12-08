@@ -126,6 +126,3 @@ module mcs_top_sampler
 
 
 endmodule    
-   
-
-
