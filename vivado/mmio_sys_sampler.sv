@@ -9,7 +9,9 @@ module mmio_sys_sampler
 (
    input logic clk,
    input logic reset,
-   
+
+
+  //Make sure to put logic for the ultrasonic sensor
    output logic sonar_trig, 
    input logic sonar_echo, 
    // FPro bus 
@@ -186,6 +188,7 @@ module mmio_sys_sampler
             end
     endgenerate
 endmodule
+
 
 
 
