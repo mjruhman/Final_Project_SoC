@@ -43,6 +43,10 @@ void TimerCore::clear() {
 uint64_t TimerCore::read_tick() {
    uint64_t upper, lower, upper_check;
 
+   // MMIO is 32 Bits but timer is 64 so there is a chance that if
+   // the timer rolls over between the two read opertations it will be corrupted data
+   // Changing it to this fixes that because it is a read check read to ensure the value is 
+   // stable when there is a rollover
    upper = (uint64_t) io_read(base_addr, COUNTER_UPPER_REG);
    lower = (uint64_t) io_read(base_addr, COUNTER_LOWER_REG);
    upper_check = (uint64_t) io_read(base_addr, COUNTER_UPPER_REG);
@@ -69,5 +73,6 @@ void TimerCore::sleep(uint64_t us) {
       now = read_time();
    } while ((now - start_time) < us);
 }
+
 
 
