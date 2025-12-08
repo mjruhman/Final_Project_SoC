@@ -5,9 +5,7 @@
 
 class HcSr04Core {
 public:
-   /**
-    * Register map
-    */
+
    enum {
       DATA_REG = 0,   /**< Read: result ticks / Write: start trigger */
       STATUS_REG = 1  /**< Read status (bit 0 = ready) */
