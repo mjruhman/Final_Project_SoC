@@ -122,41 +122,38 @@ void distance(SsegCore *sseg_p, int dist){
 
 void check_sensor(HcSr04Core *sonar_p, GpoCore *led_p){
     double dist = sonar_p->read_distance();
-
+    
     if (dist < 50){
         led_p->write(0xffff);        
     }
     else {
         led_p->write(0x0000);
     }
+
 }
 
 
+const int SERVO_MIN = 3277;
+const int SERVO_MAX = 6554;
+const int SERVO_STEP = 150;
+
 void radar_oscillation(PwmCore *pwm_p, HcSr04Core *sonar_p, GpoCore *led_p) {
     static int current_duty = SERVO_MIN;
-    static int direction = 1; // 1 = Moving Right, -1 = Moving Left
+    static int direction = 1;
 
-    // 1. Move Servo to new position
-    // Channel 6 maps to JA Top Pin 3
     pwm_p->set_duty(current_duty, 6); 
 
-    // 2. Measure Distance
     double dist_val = sonar_p->read_distance();
-
-    // 4. RADAR VISUALIZATION (Map Angle to LEDs)
-    // We map the servo range (3277 to 6554) to the 16 LEDs (0 to 15).
-    // Range is ~3277. Each LED represents a chunk of ~205 ticks.
     
-    // Only light up if object is DETECTED (< 50cm)
     if (dist_val != -1.0 && dist_val < 50.0) {
-        // Calculate which LED corresponds to the current servo angle
+
         int led_index = (current_duty - SERVO_MIN) / 205;
         
-        // Safety bounds
+ 
         if (led_index < 0) led_index = 0;
         if (led_index > 15) led_index = 15;
 
-        // Turn on ONLY that LED to show "Blip" direction
+
         led_p->write(1, led_index); 
     } 
     else {
@@ -164,7 +161,7 @@ void radar_oscillation(PwmCore *pwm_p, HcSr04Core *sonar_p, GpoCore *led_p) {
         led_p->write(0x0000); 
     }
 
-    // 5. Prepare Angle for next loop (Sweep Logic)
+
     current_duty += (direction * SERVO_STEP);
 
     // Reverse direction at limits
@@ -188,17 +185,12 @@ HcSr04Core sonar(get_slot_addr(BRIDGE_BASE, S4_USER));
 
 
 int main() {
-   // Set PWM Frequency for Servo (Standard 50Hz)
+
    pwm.set_freq(50);
 
    while (1) {
-       // Run one step of the radar
        radar_oscillation(&pwm, &sonar, &led);
-       
-       // Small delay to let servo move and prevent sensor jamming
-       // 50ms = ~20 scans per second
        sleep_ms(50); 
    } 
 }
-
 
