@@ -58,6 +58,9 @@ module hc_sr04_core
       trigger = 1'b0;
 
       // Start condition so if the CPU writes to address 0x00 force a trig state
+      // Key to the hanging issue
+      // Even if the hardware is stuck in the wait echo this write command overrides
+      // The stuck state and forces the hardware back to trig
       if (write && cs && (addr[1:0] == 2'b00)) begin
          state_next = trig;
          tick_next = 0;
