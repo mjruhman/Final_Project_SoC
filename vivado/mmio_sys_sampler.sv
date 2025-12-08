@@ -134,6 +134,7 @@ module mmio_sys_sampler
     );
     
     // slot 4: reserved for user defined  
+    // In this case I am going to be using my hc core that I made
     hc_sr04_core sonar_slot4
     (.clk(clk),
      .reset(reset),
@@ -150,6 +151,7 @@ module mmio_sys_sampler
    
 
    // slot 6: pwm 
+  // Change the Resoultion 
   chu_io_pwm_core #(.W(8), .R(16)) pwm_slot6 //
     (.clk(clk),
      .reset(reset),
@@ -188,6 +190,7 @@ module mmio_sys_sampler
             end
     endgenerate
 endmodule
+
 
 
 
