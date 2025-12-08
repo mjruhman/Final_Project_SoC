@@ -64,6 +64,9 @@ module mcs_top_sampler
    // ddfs/audio pdm 
    logic pdm, ddfs_sq_wave;
    
+   logic sonar_trig_wire;
+   logic sonar_echo_wire;
+   
    
 
    // body
@@ -79,6 +82,10 @@ module mcs_top_sampler
    assign ja_top[1] = ddfs_sq_wave;
    assign ja_top[2] = pdm;
    assign ja_top[4:3] = pwm[7:6];
+   
+   assign jb_top[1] = sonar_trig_wire;
+   assign sonar_echo_wire = jb_btm[8];
+
    
    
    //instantiate uBlaze MCS
@@ -111,12 +118,14 @@ module mcs_top_sampler
     .acl_ss(acl_ss_n),       
     
     //new components
-    .sonar_trig(jb_top[1]),
-    .sonar_echo(jb_btm[7]),   
+    .sonar_trig(sonar_trig_wire),
+    .sonar_echo(sonar_echo_wire),   
     .*  
    );   
-   
+    
 
 
 endmodule    
+   
+
 
