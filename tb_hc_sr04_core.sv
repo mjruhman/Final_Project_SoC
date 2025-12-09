@@ -11,7 +11,7 @@ module tb_hc_sr04_core();
     logic echo;
 
     //Instantiate
-    hc_sr04_core uut (
+    hc_sr04_core dut (
         .clk(clk),
         .reset(reset),
         .cs(cs),
