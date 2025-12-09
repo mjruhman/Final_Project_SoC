@@ -3,6 +3,7 @@ SoC Ultrasonic Radar Project
 This project implements a SoC on the Nexys4 DDR board to create an ultrasonic radar system.
 
 A hardware core (hc_sr04_core) was created to handle the timing required for the ultrasonic sensor trigger and echo pulse measurement.
+A testbench is included for confirmation that the core is working. 
 
 PWM-based control to sweep the servo motor back and forth.
 
