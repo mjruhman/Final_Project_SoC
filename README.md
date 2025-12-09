@@ -1,8 +1,8 @@
-FPGA SoC Ultrasonic Radar Project
+SoC Ultrasonic Radar Project
 
-This project implements a System-on-Chip (SoC) on the Nexys4 DDR board to create an ultrasonic radar system.
+This project implements a SoC on the Nexys4 DDR board to create an ultrasonic radar system.
 
-A hardware core (hc_sr04_core) was created to handle the precise microsecond timing required for the ultrasonic sensor trigger and echo pulse measurement, offloading this task from the CPU.
+A hardware core (hc_sr04_core) was created to handle the timing required for the ultrasonic sensor trigger and echo pulse measurement.
 
 PWM-based control to sweep the servo motor back and forth.
 
@@ -34,6 +34,8 @@ hc_sr04_core.cpp/h: Driver for the custom ultrasonic core. Handles timeout logic
 
 Application (main_sampler_test.cpp):
   radar_oscilliation function.
-  Continuously sweeps the servo (PWM channel 6) between defined min/max duty cycles.
+  Continuously sweeps the servo between defined min/max duty cycles.
   Polls the ultrasonic sensor for distance.
   Maps the detected distance to the LED array to provide visual feedback.
+
+For any more questions go look at the report included within the github!
