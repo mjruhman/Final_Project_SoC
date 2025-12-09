@@ -1,9 +1,41 @@
-This project implements an SoC on the Nexys4 DDR board to create an ultrasonic sensor radar system.
+FPGA SoC Ultrasonic Radar Project
 
-A dedicated hardware core (hc sr04 core.sv) was created within the Vivado folder to handle the precise timing of the trigger and echo required for the measurement of the ultrasonic sensor.
+This project implements a System-on-Chip (SoC) on the Nexys4 DDR FPGA board to create an ultrasonic radar system.
 
-A PWM based control was created to oscillate a servo motor sweeping the sensor back and forth. 
+A hardware core (hc_sr04_core) was created to handle the precise microsecond timing required for the ultrasonic sensor trigger and echo pulse measurement, offloading this task from the CPU.
 
-The LED's on board light up based on the distance that the object is detected, if the object is detected within 50cm then the lights will light up where that object is on the LEDs. For example, lets say the object is detected on the far right when the sensor and servo are going then LED 0 will light up and if it was on the far left then LED 15 would light up.
+PWM-based control to oscillate a servo motor, sweeping the sensor back and forth to create a "radar" effect.
 
-This was all built and created on the architecture provided by Chu.
+LEDs: The 16 on-board LEDs light up based on the distance of the detected object (proximity indicator).
+
+Built upon the FPro system architecture (by Dr. Chu)
+
+Hardware Architecture
+  The system is built using Xilinx Vivado and consists of the following modules:
+  Top Level: mcs_top_sampler.sv
+  Processor: MicroBlaze MCS
+  Bus: Custom MMIO Bus created by Dr. Chu
+  
+  Slot 0: System Timer
+  
+  Slot 1: UART
+  
+  Slot 2: GPO (LEDs)
+  
+  Slot 3: GPI
+  
+  Slot 4: HC-SR04 Ultrasonic Sensor Core
+  
+  Slot 6: PWM Controller for Servo
+  
+  Slot 8: 7-Segment Display
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+hc_sr04_core.cpp/h: Driver for the custom ultrasonic core. Handles timeout logic and distance calculations (ticks to centimeters).
+
+gpio_cores.cpp/h, timer_core.cpp/h, uart_core.cpp/h: Drivers for standard peripherals.
+
+Application (main_sampler_test.cpp):
+  Implements the radar_oscillation function.
+  Continuously sweeps the servo (PWM channel 6) between defined min/max duty cycles.
+  Polls the ultrasonic sensor for distance.
+  Maps the detected distance to the LED array to provide visual feedback.
