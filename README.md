@@ -1,12 +1,12 @@
 FPGA SoC Ultrasonic Radar Project
 
-This project implements a System-on-Chip (SoC) on the Nexys4 DDR FPGA board to create an ultrasonic radar system.
+This project implements a System-on-Chip (SoC) on the Nexys4 DDR board to create an ultrasonic radar system.
 
 A hardware core (hc_sr04_core) was created to handle the precise microsecond timing required for the ultrasonic sensor trigger and echo pulse measurement, offloading this task from the CPU.
 
-PWM-based control to oscillate a servo motor, sweeping the sensor back and forth to create a "radar" effect.
+PWM-based control to sweep the servo motor back and forth.
 
-LEDs: The 16 on-board LEDs light up based on the distance of the detected object (proximity indicator).
+The 16 on-board LEDs light up based on the distance of the detected object which is less than 50 cm the object will be detected and the lights will light up. 
 
 Built upon the FPro system architecture (by Dr. Chu)
 
@@ -18,7 +18,7 @@ Hardware Architecture
   
   Slot 0: System Timer
   
-  Slot 1: UART
+  Slot 1: UART - Didn't use but it is instantiated with correct files so it is there if needed
   
   Slot 2: GPO (LEDs)
   
@@ -28,14 +28,12 @@ Hardware Architecture
   
   Slot 6: PWM Controller for Servo
   
-  Slot 8: 7-Segment Display
+  Slot 8: 7-Segment Display - Didn't use after the distance testing
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 hc_sr04_core.cpp/h: Driver for the custom ultrasonic core. Handles timeout logic and distance calculations (ticks to centimeters).
 
-gpio_cores.cpp/h, timer_core.cpp/h, uart_core.cpp/h: Drivers for standard peripherals.
-
 Application (main_sampler_test.cpp):
-  Implements the radar_oscillation function.
+  radar_oscilliation function.
   Continuously sweeps the servo (PWM channel 6) between defined min/max duty cycles.
   Polls the ultrasonic sensor for distance.
   Maps the detected distance to the LED array to provide visual feedback.
